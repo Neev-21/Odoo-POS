@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import styles from "./CartPanel.module.css";
 
 export default function CartPanel({
@@ -15,16 +15,21 @@ export default function CartPanel({
   const { subtotal, tax, grandTotal } = totals;
   const isEmpty = cart.length === 0;
 
+  // Checkout Payment Dialog State
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [email, setEmail] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("UPI"); // UPI | Card | Cash
+
   const handleCheckout = (status) => {
     if (isEmpty) return;
 
-    let email = "";
     if (status === "Paid") {
-      email = prompt("Enter customer email to send the receipt:");
-      if (email === null) return; // user cancelled payment
+      // Open our beautiful custom in-app payment modal
+      setShowPaymentModal(true);
+      return;
     }
-    
-    // Format cart details for a professional alert layout
+
+    // Save as Draft directly
     const cartSummary = cart.map(item => ({
       product_id: item.product.id,
       name: item.product.name,
@@ -33,14 +38,16 @@ export default function CartPanel({
       line_total: Number((item.quantity * item.product.price).toFixed(2))
     }));
 
+    const ticketId = `#${Math.floor(1000 + Math.random() * 9000)}`;
     const receiptPayload = {
-      id: `#${Math.floor(1000 + Math.random() * 9000)}`, // Generate visual ticket number
+      id: ticketId,
       table: selectedTable,
       customer: customerName,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       cart: cartSummary,
-      status: status, // "Draft" or "Paid"
-      customerEmail: email,
+      status: "Draft",
+      paymentMethod: "",
+      customerEmail: "",
       summary: {
         subtotal: Number(subtotal.toFixed(2)),
         tax: Number(tax.toFixed(2)),
@@ -48,17 +55,57 @@ export default function CartPanel({
       }
     };
 
-    // Prompt specifies: alert(JSON.stringify(currentCart, null, 2))
-    alert(JSON.stringify(receiptPayload, null, 2));
-    
-    if (status === "Paid" && email) {
-      alert(`Receipt successfully sent to customer's email: ${email}`);
-    }
-    
     // Track order in history & reset active cart
     if (onSendToKitchen) {
       onSendToKitchen(receiptPayload);
     }
+    alert(`✅ Draft ticket ${ticketId} saved successfully!`);
+  };
+
+  const handlePaymentComplete = () => {
+    // Email is optional for Cash; required for UPI/Card to send receipt
+    if (email && !email.includes("@")) {
+      alert("Please enter a valid email address or leave it blank.");
+      return;
+    }
+
+    const cartSummary = cart.map(item => ({
+      product_id: item.product.id,
+      name: item.product.name,
+      price: item.product.price,
+      quantity: item.quantity,
+      line_total: Number((item.quantity * item.product.price).toFixed(2))
+    }));
+
+    const ticketId = `#${Math.floor(1000 + Math.random() * 9000)}`;
+    const receiptPayload = {
+      id: ticketId,
+      table: selectedTable,
+      customer: customerName,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      cart: cartSummary,
+      status: "Paid",
+      paymentMethod: paymentMethod, // "UPI" | "Card" | "Cash"
+      customerEmail: email || "",
+      summary: {
+        subtotal: Number(subtotal.toFixed(2)),
+        tax: Number(tax.toFixed(2)),
+        grandTotal: Number(grandTotal.toFixed(2))
+      }
+    };
+
+    // Track order in history & reset active cart
+    if (onSendToKitchen) {
+      onSendToKitchen(receiptPayload);
+    }
+
+    // Reset checkout states
+    setShowPaymentModal(false);
+    setEmail("");
+    setPaymentMethod("UPI");
+
+    const emailMsg = email ? ` Receipt emailed to ${email}.` : "";
+    alert(`✅ Payment of $${receiptPayload.summary.grandTotal.toFixed(2)} confirmed via ${paymentMethod}. Ticket ${ticketId} saved.${emailMsg}`);
   };
 
   return (
@@ -179,6 +226,75 @@ export default function CartPanel({
           </svg>
         </button>
       </div>
+
+      {/* Beautiful in-app Payment Overlay */}
+      {showPaymentModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.paymentModal}>
+            <h3 className={styles.modalTitle}>Checkout Payment</h3>
+            
+            <div className={styles.modalSection}>
+              <label className={styles.inputLabel}>Customer Email <span style={{opacity:0.6, fontSize:'0.8em'}}>(optional — for receipt)</span></label>
+              <input
+                type="email"
+                placeholder="customer@email.com (leave blank for no receipt)"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className={styles.modalInput}
+                autoFocus
+              />
+            </div>
+            
+            <div className={styles.modalSection}>
+              <label className={styles.inputLabel}>Select Method</label>
+              <div className={styles.paymentGrid}>
+                {["UPI", "Card", "Cash"].map((method) => (
+                  <button
+                    key={method}
+                    type="button"
+                    className={`${styles.paymentBtn} ${paymentMethod === method ? styles.activePaymentBtn : ""}`}
+                    onClick={() => setPaymentMethod(method)}
+                  >
+                    <span className={styles.paymentIcon}>
+                      {method === "UPI" && "📱"}
+                      {method === "Card" && "💳"}
+                      {method === "Cash" && "💵"}
+                    </span>
+                    {method}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className={styles.totalsSummary}>
+              <div className={styles.totalRow}>
+                <span>Amount Due:</span>
+                <span className={styles.totalVal}>${grandTotal.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div className={styles.modalActions}>
+              <button
+                type="button"
+                className={styles.cancelBtn}
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setEmail("");
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className={styles.confirmBtn}
+                onClick={handlePaymentComplete}
+              >
+                Pay & Email
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

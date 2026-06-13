@@ -366,3 +366,190 @@
 .kitchenBtn:hover .btnArrow:not(.disabledBtn) {
   transform: translateX(4px);
 }
+
+/* Beautiful in-app Payment Overlay */
+.modalOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(46, 31, 21, 0.4); /* warm dark wood overlay shade */
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: modalFadeIn 0.2s ease-out;
+}
+
+.paymentModal {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 10px 30px rgba(92, 58, 33, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modalTitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.modalSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.inputLabel {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.modalInput {
+  height: 38px;
+  padding: 0 10px;
+  background: #FAF8F5;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-sans), sans-serif;
+  transition: all 0.2s;
+}
+
+.modalInput:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(140, 98, 57, 0.15);
+}
+
+.paymentGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.paymentBtn {
+  height: 60px;
+  background: #FAF8F5;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.paymentBtn:hover {
+  background: #F5F1EB;
+  border-color: var(--neon-cyan);
+}
+
+.activePaymentBtn {
+  background: #FAF3EC;
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 4px 10px rgba(140, 98, 57, 0.15);
+}
+
+.paymentIcon {
+  font-size: 18px;
+}
+
+.totalsSummary {
+  background: #FAF8F5;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.totalVal {
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  color: var(--neon-cyan);
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.cancelBtn {
+  flex: 1;
+  height: 38px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelBtn:hover {
+  background: #FAF8F5;
+}
+
+.confirmBtn {
+  flex: 1.5;
+  height: 38px;
+  background: linear-gradient(135deg, #5E806D 0%, #476252 100%);
+  border: 1px solid #476252;
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(94, 128, 109, 0.2);
+}
+
+.confirmBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(94, 128, 109, 0.3);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

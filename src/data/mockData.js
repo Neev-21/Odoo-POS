@@ -1,7 +1,7 @@
 export const INITIAL_CATEGORIES = [
   { id: "cat_1", name: "Beverages", color: "#8C6239" },
   { id: "cat_2", name: "Pastries", color: "#C2915C" },
-  { id: "cat_3", name: "Milkshakes", color: "#D4A373" },
+  { id: "cat_3", name: "Milkshakes", color: "#D36880" },
   { id: "cat_4", name: "Burgers", color: "#5C3A21" },
   { id: "cat_5", name: "Sides", color: "#5E806D" }
 ];
