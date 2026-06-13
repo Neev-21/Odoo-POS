@@ -398,3 +398,134 @@
   color: var(--text-muted);
   line-height: 1.4;
 }
+
+/* Status Badges */
+.statusDraftBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  border: 1px solid var(--neon-pink);
+  background: rgba(193, 92, 61, 0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.statusPaidBadge {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--neon-green);
+  border: 1px solid var(--neon-green);
+  background: rgba(94, 128, 109, 0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+/* Receipt Action Buttons */
+.receiptActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.editBtn, .deleteBtn, .payBtn {
+  flex: 1;
+  height: 38px;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.editBtn {
+  background: #ffffff;
+  border: 1px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.editBtn:hover {
+  background: #FAF8F5;
+  transform: translateY(-1px);
+}
+
+.deleteBtn {
+  background: #ffffff;
+  border: 1px solid var(--neon-pink);
+  color: var(--neon-pink);
+}
+
+.deleteBtn:hover {
+  background: rgba(193, 92, 61, 0.05);
+  transform: translateY(-1px);
+}
+
+.payBtn {
+  background: linear-gradient(135deg, #5E806D 0%, #476252 100%);
+  border: 1px solid #476252;
+  color: #ffffff;
+}
+
+.payBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(94, 128, 109, 0.2);
+}
+
+.receiptActionsPaid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 15px;
+}
+
+.emailInputGroup {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.emailInput {
+  flex: 1;
+  height: 38px;
+  padding: 0 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-sans), sans-serif;
+  transition: all 0.2s;
+}
+
+.emailInput:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(140, 98, 57, 0.15);
+}
+
+.sendEmailBtn {
+  height: 38px;
+  padding: 0 15px;
+  background: linear-gradient(135deg, #8C6239 0%, #704E2D 100%);
+  border: 1px solid #704E2D;
+  border-radius: 6px;
+  color: #ffffff;
+  font-family: var(--font-sans), sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sendEmailBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(140, 98, 57, 0.15);
+}

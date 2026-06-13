@@ -15,8 +15,14 @@ export default function CartPanel({
   const { subtotal, tax, grandTotal } = totals;
   const isEmpty = cart.length === 0;
 
-  const handleSendToKitchen = () => {
+  const handleCheckout = (status) => {
     if (isEmpty) return;
+
+    let email = "";
+    if (status === "Paid") {
+      email = prompt("Enter customer email to send the receipt:");
+      if (email === null) return; // user cancelled payment
+    }
     
     // Format cart details for a professional alert layout
     const cartSummary = cart.map(item => ({
@@ -33,6 +39,8 @@ export default function CartPanel({
       customer: customerName,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       cart: cartSummary,
+      status: status, // "Draft" or "Paid"
+      customerEmail: email,
       summary: {
         subtotal: Number(subtotal.toFixed(2)),
         tax: Number(tax.toFixed(2)),
@@ -42,6 +50,10 @@ export default function CartPanel({
 
     // Prompt specifies: alert(JSON.stringify(currentCart, null, 2))
     alert(JSON.stringify(receiptPayload, null, 2));
+    
+    if (status === "Paid" && email) {
+      alert(`Receipt successfully sent to customer's email: ${email}`);
+    }
     
     // Track order in history & reset active cart
     if (onSendToKitchen) {
@@ -150,11 +162,18 @@ export default function CartPanel({
       {/* Action Buttons */}
       <div className={styles.actionContainer}>
         <button
-          className={`${styles.kitchenBtn} ${isEmpty ? styles.disabledBtn : ""}`}
-          onClick={handleSendToKitchen}
+          className={`${styles.draftBtn} ${isEmpty ? styles.disabledBtn : ""}`}
+          onClick={() => handleCheckout("Draft")}
           disabled={isEmpty}
         >
-          <span className={styles.btnText}>SEND TO KITCHEN</span>
+          SAVE DRAFT
+        </button>
+        <button
+          className={`${styles.kitchenBtn} ${isEmpty ? styles.disabledBtn : ""}`}
+          onClick={() => handleCheckout("Paid")}
+          disabled={isEmpty}
+        >
+          <span className={styles.btnText}>PAY & EMAIL</span>
           <svg className={styles.btnArrow} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>

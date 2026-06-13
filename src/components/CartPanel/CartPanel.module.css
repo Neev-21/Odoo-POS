@@ -284,25 +284,57 @@
 
 /* Cozy Sage Green Checkout button */
 .actionContainer {
+  display: flex;
+  gap: 12px;
   padding-top: 10px;
 }
 
+.draftBtn {
+  flex: 1;
+  height: 50px;
+  background: #ffffff;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 8px;
+  color: var(--neon-cyan);
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(140, 98, 57, 0.02);
+}
+
+.draftBtn:hover:not(.disabledBtn) {
+  background: #FAF8F5;
+  border-color: var(--neon-cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(140, 98, 57, 0.05);
+}
+
+.draftBtn:active:not(.disabledBtn) {
+  transform: translateY(0);
+}
+
 .kitchenBtn {
-  width: 100%;
+  flex: 1.5;
   height: 50px;
   background: linear-gradient(135deg, #5E806D 0%, #476252 100%);
   border: 1px solid #476252;
   border-radius: 8px;
   color: #ffffff;
   font-family: var(--font-mono), monospace;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 800;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(94, 128, 109, 0.2);
 }

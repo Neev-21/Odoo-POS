@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import styles from "./page.module.css";
 import { INITIAL_PRODUCTS } from "@/data/mockData";
 import TopBar from "@/components/TopBar/TopBar";
@@ -9,6 +9,19 @@ import ProductGrid from "@/components/ProductGrid/ProductGrid";
 import CartPanel from "@/components/CartPanel/CartPanel";
 
 export default function Home() {
+  // Mock prompt/alert for non-blocking test automation (only when ?test=true is active)
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.search.includes("test=true")) {
+      window.prompt = (msg, defaultText) => {
+        console.log("Mock Prompt:", msg);
+        return defaultText || "customer@example.com";
+      };
+      window.alert = (msg) => {
+        console.log("Mock Alert:", msg);
+      };
+    }
+  }, []);
+
   // Core POS State Variables
   const [cart, setCart] = useState([]);
   const [activeCategoryId, setActiveCategoryId] = useState("cat_1"); // Default: Beverages
@@ -99,6 +112,64 @@ export default function Home() {
     return cart.reduce((acc, item) => acc + item.quantity, 0);
   }, [cart]);
 
+  // Draft / Paid Action Handlers
+  const handleEditDraft = (draft) => {
+    const restoredCart = draft.cart.map(item => {
+      const product = INITIAL_PRODUCTS.find(p => p.id === item.product_id);
+      return {
+        product: product || { id: item.product_id, name: item.name, price: item.price },
+        quantity: item.quantity
+      };
+    });
+    setCart(restoredCart);
+    setSelectedTable(draft.table);
+    setCustomerName(draft.customer);
+    setPastOrders(prev => prev.filter(o => o.id !== draft.id));
+    setCurrentView("pos");
+    setMobileTab("menu");
+  };
+
+  const handleDeleteDraft = (draftId) => {
+    if (confirm("Are you sure you want to delete this draft ticket?")) {
+      setPastOrders(prev => prev.filter(o => o.id !== draftId));
+      if (selectedPastOrderId === draftId) {
+        setSelectedPastOrderId(null);
+      }
+    }
+  };
+
+  const handlePayDraft = (draftId) => {
+    const email = prompt("Enter customer email to send the receipt:");
+    if (email === null) return; // cancelled
+    
+    setPastOrders(prev => prev.map(o => {
+      if (o.id === draftId) {
+        return {
+          ...o,
+          status: "Paid",
+          customerEmail: email
+        };
+      }
+      return o;
+    }));
+    
+    alert(`Receipt successfully paid and emailed to: ${email || "(no email entered)"}`);
+  };
+
+  const handleSendEmail = (order, email) => {
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+    setPastOrders(prev => prev.map(o => {
+      if (o.id === order.id) {
+        return { ...o, customerEmail: email };
+      }
+      return o;
+    }));
+    alert(`Receipt sent to ${email} successfully!`);
+  };
+
   return (
     <div className={styles.posContainer}>
       {/* Top Header Bar */}
@@ -186,7 +257,12 @@ export default function Home() {
                           onClick={() => setSelectedPastOrderId(order.id)}
                         >
                           <div className={styles.orderHistoryMeta}>
-                            <span className={styles.orderHistoryId}>{order.id}</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span className={styles.orderHistoryId}>{order.id}</span>
+                              <span className={order.status === "Paid" ? styles.statusPaidBadge : styles.statusDraftBadge}>
+                                {order.status}
+                              </span>
+                            </div>
                             <span className={styles.orderHistoryTime}>{order.timestamp}</span>
                           </div>
                           <div className={styles.orderHistoryBody}>
@@ -215,12 +291,22 @@ export default function Home() {
                   <div className={styles.receiptHeader}>
                     <div className={styles.receiptTitleRow}>
                       <h2 className={styles.receiptTitle}>TICKET RECEIPT</h2>
-                      <span className={styles.receiptIdBadge}>{selectedPastOrder.id}</span>
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                        <span className={selectedPastOrder.status === "Paid" ? styles.statusPaidBadge : styles.statusDraftBadge}>
+                          {selectedPastOrder.status}
+                        </span>
+                        <span className={styles.receiptIdBadge}>{selectedPastOrder.id}</span>
+                      </div>
                     </div>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "var(--text-muted)", marginTop: "5px" }}>
                       <span>{selectedPastOrder.table} • {selectedPastOrder.customer}</span>
                       <span>{selectedPastOrder.timestamp}</span>
                     </div>
+                    {selectedPastOrder.customerEmail && (
+                      <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                        Email: {selectedPastOrder.customerEmail}
+                      </div>
+                    )}
                   </div>
                   
                   <div className={styles.receiptItemsList}>
@@ -253,15 +339,59 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <button 
-                    className={styles.reprintBtn}
-                    onClick={() => alert(JSON.stringify(selectedPastOrder, null, 2))}
-                  >
-                    <svg style={{ width: "16px", height: "16px" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                    Alert Payload JSON
-                  </button>
+                  {selectedPastOrder.status === "Draft" ? (
+                    <div className={styles.receiptActions}>
+                      <button 
+                        className={styles.editBtn}
+                        onClick={() => handleEditDraft(selectedPastOrder)}
+                      >
+                        <svg style={{ width: "14px", height: "14px" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Edit Draft
+                      </button>
+                      <button 
+                        className={styles.deleteBtn}
+                        onClick={() => handleDeleteDraft(selectedPastOrder.id)}
+                      >
+                        <svg style={{ width: "14px", height: "14px" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Delete Draft
+                      </button>
+                      <button 
+                        className={styles.payBtn}
+                        onClick={() => handlePayDraft(selectedPastOrder.id)}
+                      >
+                        <svg style={{ width: "14px", height: "14px" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Pay & Email
+                      </button>
+                    </div>
+                  ) : (
+                    <div className={styles.receiptActionsPaid}>
+                      <div className={styles.emailInputGroup}>
+                        <input
+                          type="email"
+                          placeholder="customer@email.com"
+                          className={styles.emailInput}
+                          id={`email-input-${selectedPastOrder.id}`}
+                          defaultValue={selectedPastOrder.customerEmail || ""}
+                        />
+                        <button 
+                          className={styles.sendEmailBtn}
+                          onClick={() => {
+                            const inputEl = document.getElementById(`email-input-${selectedPastOrder.id}`);
+                            const email = inputEl ? inputEl.value : "";
+                            handleSendEmail(selectedPastOrder, email);
+                          }}
+                        >
+                          Send Email
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className={styles.receiptContainer} style={{ justifyContent: "center", alignItems: "center" }}>
