@@ -1,0 +1,331 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1000;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.leftSection {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.logo {
+  font-family: var(--font-mono), monospace;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 2px;
+  display: flex;
+  gap: 4px;
+}
+
+.neonTextCyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-cyan-glow);
+}
+
+.neonTextPink {
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px var(--neon-pink-glow);
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.navBtn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.navBtn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.activeNav {
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+  background: rgba(0, 242, 254, 0.05);
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+}
+
+/* Search bar styling */
+.centerSection {
+  flex: 1;
+  max-width: 400px;
+  margin: 0 20px;
+}
+
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 38px;
+  padding: 0 35px 0 40px;
+  background: rgba(7, 6, 15, 0.65);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  color: var(--text-primary);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+  background: rgba(7, 6, 15, 0.95);
+}
+
+.clearSearch {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.clearSearch:hover {
+  color: var(--neon-pink);
+}
+
+/* Right Section buttons & modals */
+.rightSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.relativeContainer {
+  position: relative;
+}
+
+.overlayTrigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  min-width: 150px;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.overlayTrigger:hover,
+.activeTrigger {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
+}
+
+.tableTrigger:hover,
+.tableTrigger.activeTrigger {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+}
+
+.btnIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--text-secondary);
+}
+
+.triggerLabel {
+  display: flex;
+  flex-direction: column;
+}
+
+.subText {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mainText {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Dropdown Modals */
+.dropdownModal {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 280px;
+  padding: 15px;
+  z-index: 1100;
+  border-color: var(--neon-pink);
+  animation: modalFadeIn 0.2s ease-out;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 0, 127, 0.15);
+}
+
+.tableModal {
+  width: 260px;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 242, 254, 0.15);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modalTitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.inputGroup {
+  margin-bottom: 10px;
+}
+
+.customInput {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  background: rgba(7, 6, 15, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-sans), sans-serif;
+  transition: all 0.2s;
+}
+
+.customInput:focus {
+  outline: none;
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 8px var(--neon-pink-glow);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-color);
+  margin: 10px 0;
+}
+
+.presetList {
+  max-height: 150px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-right: 4px;
+}
+
+.presetItem {
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.presetItem:hover {
+  background: rgba(255, 0, 127, 0.1);
+  color: var(--neon-pink);
+}
+
+.selectedPreset {
+  background: rgba(255, 0, 127, 0.15);
+  color: var(--neon-pink);
+  font-weight: 600;
+}
+
+/* Table Selection Grid */
+.tableGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.tableBtn {
+  height: 45px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono), monospace;
+}
+
+.tableBtn:hover {
+  background: rgba(0, 242, 254, 0.08);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 8px var(--neon-cyan-glow);
+}
+
+.selectedTableBtn {
+  background: rgba(0, 242, 254, 0.15);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 10px var(--neon-cyan-glow);
+}
