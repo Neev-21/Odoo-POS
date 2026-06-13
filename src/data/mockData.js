@@ -8,34 +8,34 @@ export const INITIAL_CATEGORIES = [
 
 export const INITIAL_PRODUCTS = [
   // User specified products
-  { id: "prod_1", category_id: "cat_1", name: "Espresso", price: 3.50 },
-  { id: "prod_2", category_id: "cat_1", name: "Latte", price: 4.50 },
-  { id: "prod_3", category_id: "cat_2", name: "Croissant", price: 4.00 },
+  { id: "prod_1", category_id: "cat_1", name: "Espresso", price: 3.50, kds: true },
+  { id: "prod_2", category_id: "cat_1", name: "Latte", price: 4.50, kds: true },
+  { id: "prod_3", category_id: "cat_2", name: "Croissant", price: 4.00, kds: false },
 
   // Supplementary Beverages
-  { id: "prod_cola", category_id: "cat_1", name: "Cherry Cola", price: 3.00 },
-  { id: "prod_rootbeer", category_id: "cat_1", name: "Draft Root Beer", price: 3.25 },
-  { id: "prod_icedcoffee", category_id: "cat_1", name: "Iced Coffee", price: 4.25 },
+  { id: "prod_cola", category_id: "cat_1", name: "Cherry Cola", price: 3.00, kds: true },
+  { id: "prod_rootbeer", category_id: "cat_1", name: "Draft Root Beer", price: 3.25, kds: true },
+  { id: "prod_icedcoffee", category_id: "cat_1", name: "Iced Coffee", price: 4.25, kds: true },
 
   // Supplementary Pastries
-  { id: "prod_applepie", category_id: "cat_2", name: "Apple Pie", price: 5.50 },
-  { id: "prod_donut", category_id: "cat_2", name: "Glazed Donut", price: 2.75 },
-  { id: "prod_brownie", category_id: "cat_2", name: "Warm Fudge Brownie", price: 4.50 },
+  { id: "prod_applepie", category_id: "cat_2", name: "Apple Pie", price: 5.50, kds: false },
+  { id: "prod_donut", category_id: "cat_2", name: "Glazed Donut", price: 2.75, kds: false },
+  { id: "prod_brownie", category_id: "cat_2", name: "Warm Fudge Brownie", price: 4.50, kds: false },
 
   // Milkshakes
-  { id: "prod_vanillashake", category_id: "cat_3", name: "Classic Vanilla Shake", price: 5.00 },
-  { id: "prod_chocshake", category_id: "cat_3", name: "Double Chocolate Malt", price: 5.50 },
-  { id: "prod_strawberryshake", category_id: "cat_3", name: "Hazelnut Milkshake", price: 5.75 },
+  { id: "prod_vanillashake", category_id: "cat_3", name: "Classic Vanilla Shake", price: 5.00, kds: true },
+  { id: "prod_chocshake", category_id: "cat_3", name: "Double Chocolate Malt", price: 5.50, kds: true },
+  { id: "prod_strawberryshake", category_id: "cat_3", name: "Hazelnut Milkshake", price: 5.75, kds: true },
 
   // Burgers
-  { id: "prod_cheeseburger", category_id: "cat_4", name: "Cheese Burger", price: 8.50 },
-  { id: "prod_doubleburger", category_id: "cat_4", name: "Tandoori Cheese Burger", price: 10.95 },
-  { id: "prod_dinerclub", category_id: "cat_4", name: "Double Grilled Cheese Sandwich", price: 7.95 },
+  { id: "prod_cheeseburger", category_id: "cat_4", name: "Cheese Burger", price: 8.50, kds: true },
+  { id: "prod_doubleburger", category_id: "cat_4", name: "Tandoori Cheese Burger", price: 10.95, kds: true },
+  { id: "prod_dinerclub", category_id: "cat_4", name: "Double Grilled Cheese Sandwich", price: 7.95, kds: true },
 
   // Sides
-  { id: "prod_fries", category_id: "cat_5", name: "Crispy Fries", price: 3.95 },
-  { id: "prod_onionrings", category_id: "cat_5", name: "Golden Onion Rings", price: 4.50 },
-  { id: "prod_mozzarella", category_id: "cat_5", name: "Mozzarella Glow Sticks", price: 5.50 }
+  { id: "prod_fries", category_id: "cat_5", name: "Crispy Fries", price: 3.95, kds: true },
+  { id: "prod_onionrings", category_id: "cat_5", name: "Golden Onion Rings", price: 4.50, kds: true },
+  { id: "prod_mozzarella", category_id: "cat_5", name: "Mozzarella Glow Sticks", price: 5.50, kds: true }
 ];
 
 export const INITIAL_TABLES = [

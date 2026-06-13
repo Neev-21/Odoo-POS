@@ -1,0 +1,8 @@
+.kdsPageWrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at center, #2E1F15 0%, #150E0A 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}

@@ -1,0 +1,364 @@
+.billPageWrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background: radial-gradient(circle at center, #2E1F15 0%, #150E0A 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+  font-family: var(--font-sans), sans-serif;
+  color: var(--text-primary);
+}
+
+/* Realistic Perforated Thermal Receipt design */
+.receiptContainer {
+  background: #FCFAF6; /* Warm parchment thermal paper background */
+  width: 100%;
+  max-width: 380px;
+  border-radius: 4px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  border-left: 1px solid rgba(0, 0, 0, 0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Top & Bottom jagged edge decorations */
+.receiptContainer::before,
+.receiptContainer::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
+}
+
+.receiptContainer::before {
+  top: -8px;
+  background-image: radial-gradient(circle, transparent 70%, #FCFAF6 70%);
+}
+
+.receiptContainer::after {
+  bottom: -8px;
+  background-image: radial-gradient(circle, transparent 70%, #FCFAF6 70%);
+  transform: rotate(180deg);
+}
+
+/* Header styling */
+.receiptHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.mugLogo {
+  display: flex;
+  background: #FAF3EC;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-radius: 50%;
+  color: var(--neon-cyan);
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(140, 98, 57, 0.05);
+}
+
+.mugIcon {
+  width: 28px;
+  height: 28px;
+}
+
+.brandName {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #2E1F15;
+  margin: 0 0 4px 0;
+}
+
+.brandSub {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.receiptDivider {
+  width: 100%;
+  border-top: 1px dashed #C2B8AB;
+  margin: 15px 0;
+}
+
+.receiptType {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #2E1F15;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+}
+
+.statusBadgeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.paidBadge {
+  background: #E8F5E9;
+  border: 1px solid #A5D6A7;
+  color: #2E7D32;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.draftBadge {
+  background: #FFE0B2;
+  border: 1px solid #FFB74D;
+  color: #E65100;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.ticketNumber {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5C3A21;
+}
+
+/* Meta Data section */
+.metaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #5C3A21;
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metaRow span:first-child {
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.metaRow span:last-child {
+  font-weight: 600;
+}
+
+.customerEmail {
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Items details section */
+.itemsSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemHeaderRow {
+  display: grid;
+  grid-template-columns: 2.2fr 0.5fr 1fr 1fr;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #EADFD3;
+  padding-bottom: 6px;
+  margin-bottom: 10px;
+}
+
+.hdrName { text-align: left; }
+.hdrQty { text-align: center; }
+.hdrPrice { text-align: right; }
+.hdrTotal { text-align: right; }
+
+.itemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.emptyItems {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 15px 0;
+}
+
+.itemRow {
+  display: grid;
+  grid-template-columns: 2.2fr 0.5fr 1fr 1fr;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2E1F15;
+}
+
+.itemName {
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemQty {
+  text-align: center;
+  font-family: var(--font-mono), monospace;
+}
+
+.itemPrice {
+  text-align: right;
+  font-family: var(--font-mono), monospace;
+}
+
+.itemTotal {
+  text-align: right;
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+}
+
+/* Summary section */
+.summarySection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  color: #2E1F15;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.summaryRow span:last-child {
+  font-family: var(--font-mono), monospace;
+  font-weight: 600;
+}
+
+.grandTotalRow {
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.grandTotalRow span:last-child {
+  color: var(--neon-cyan);
+}
+
+/* Footer section */
+.receiptFooter {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.receiptFooter p {
+  margin: 0;
+}
+
+.footerGlow {
+  margin-top: 6px !important;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #2E1F15;
+  font-weight: 800;
+}
+
+/* Operations Control Panel */
+.controlPanel {
+  margin-top: 30px;
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.printBtn, .closeBtn {
+  flex: 1;
+  height: 42px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.printBtn {
+  background: linear-gradient(135deg, #5E806D 0%, #476252 100%);
+  border: 1px solid #476252;
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(94, 128, 109, 0.2);
+}
+
+.printBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(94, 128, 109, 0.35);
+}
+
+.closeBtn {
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Print Overrides styling */
+@media print {
+  body, .billPageWrapper {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    min-height: auto !important;
+  }
+  
+  .receiptContainer {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    border: none !important;
+  }
+  
+  .receiptContainer::before,
+  .receiptContainer::after {
+    display: none !important;
+  }
+  
+  .controlPanel {
+    display: none !important;
+  }
+}

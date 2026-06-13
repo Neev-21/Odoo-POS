@@ -1,0 +1,340 @@
+.kdsDashboard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: transparent;
+  color: #FAF8F5;
+  font-family: var(--font-sans), sans-serif;
+}
+
+/* Header bar */
+.kdsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(46, 31, 21, 0.4);
+  border-bottom: 2px dashed var(--border-color);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 12px 12px 0 0;
+}
+
+.brandGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logoIcon {
+  width: 28px;
+  height: 28px;
+  color: var(--neon-cyan);
+}
+
+.kdsTitle {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.kdsSubtitle {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  margin: 1px 0 0 0;
+  text-transform: uppercase;
+}
+
+/* Controls & filters */
+.controlsGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchBar {
+  height: 32px;
+  width: 180px;
+  padding: 0 10px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.searchBar:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.15);
+}
+
+.filterSelect {
+  height: 32px;
+  padding: 0 8px;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--neon-cyan);
+}
+
+/* KDS Grid Columns */
+.kdsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  padding: 15px 20px;
+  gap: 15px;
+  overflow: hidden;
+}
+
+.kdsColumn {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 8px rgba(140, 98, 57, 0.02);
+}
+
+.columnHeader {
+  padding: 10px 15px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.columnHeader h2 {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.toCookHeader {
+  background: rgba(193, 92, 61, 0.05);
+  color: var(--neon-pink);
+  border-bottom-color: var(--neon-pink);
+}
+
+.preparingHeader {
+  background: rgba(94, 128, 109, 0.05);
+  color: var(--neon-cyan);
+  border-bottom-color: var(--neon-cyan);
+}
+
+.columnScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+  align-content: start;
+  scrollbar-width: thin;
+}
+
+/* Kds Ticket Card */
+.ticketCard {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 12px;
+  color: #2E1F15;
+  box-shadow: 0 2px 10px rgba(140, 98, 57, 0.05);
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.ticketCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.toCookCard::before {
+  background: var(--neon-pink);
+}
+
+.preparingCard::before {
+  background: var(--neon-cyan);
+}
+
+.ticketCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(140, 98, 57, 0.1);
+  border-color: rgba(140, 98, 57, 0.25);
+}
+
+.preparingCard {
+  background: #FCFAF6;
+}
+
+/* Card components */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.cardId {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 900;
+  color: #2E1F15;
+  margin-right: 6px;
+}
+
+.cardTable {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  border: 1px solid var(--neon-cyan);
+  background: rgba(94, 128, 109, 0.05);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.cardTime {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.cardCustomer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.statusLabel {
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.statusToCook {
+  background: #FFEbee;
+  color: #C62828;
+}
+
+.statusPreparing {
+  background: #E0F7FA;
+  color: #00838F;
+}
+
+.cardDivider {
+  height: 1px;
+  background: var(--border-color);
+  margin-bottom: 8px;
+}
+
+.cardItems {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cardItem {
+  display: flex;
+  align-items: center;
+  padding: 5px 8px;
+  border-radius: 4px;
+  background: #FAF8F5;
+  border: 1px solid var(--border-color);
+  font-size: 11px;
+  font-weight: 700;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.cardItem:hover {
+  background: #F5F1EB;
+  border-color: rgba(140, 98, 57, 0.15);
+}
+
+.itemQty {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--neon-cyan);
+  margin-right: 6px;
+  min-width: 18px;
+}
+
+.itemName {
+  flex: 1;
+  color: var(--text-primary);
+}
+
+.itemCompleted {
+  opacity: 0.5;
+  background: #ECEFF1;
+  border-color: #CFD8DC;
+}
+
+.itemCompleted .itemName {
+  text-decoration: line-through;
+  color: #78909C;
+}
+
+.itemCompleted .itemQty {
+  color: #78909C;
+}
+
+.doneCheck {
+  font-size: 11px;
+  font-weight: 900;
+  color: #2E7D32;
+  margin-left: 4px;
+}
+
+/* Card footer action nudge */
+.cardFooter {
+  text-align: right;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 6px;
+  margin-top: auto;
+}
+
+.ticketCard:hover .cardFooter {
+  color: var(--neon-cyan);
+}

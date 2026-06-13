@@ -19,12 +19,17 @@ export default function CartPanel({
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [email, setEmail] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("UPI"); // UPI | Card | Cash
+  const [checkoutStep, setCheckoutStep] = useState("method"); // "method" | "upi_qr" | "success_review"
+  const [rating, setRating] = useState(5);
+  const [reviewText, setReviewText] = useState("");
 
   const handleCheckout = (status) => {
     if (isEmpty) return;
 
     if (status === "Paid") {
-      // Open our beautiful custom in-app payment modal
+      setCheckoutStep("method");
+      setRating(5);
+      setReviewText("");
       setShowPaymentModal(true);
       return;
     }
@@ -48,6 +53,8 @@ export default function CartPanel({
       status: "Draft",
       paymentMethod: "",
       customerEmail: "",
+      rating: 0,
+      reviewText: "",
       summary: {
         subtotal: Number(subtotal.toFixed(2)),
         tax: Number(tax.toFixed(2)),
@@ -87,6 +94,8 @@ export default function CartPanel({
       status: "Paid",
       paymentMethod: paymentMethod, // "UPI" | "Card" | "Cash"
       customerEmail: email || "",
+      rating: rating,
+      reviewText: reviewText,
       summary: {
         subtotal: Number(subtotal.toFixed(2)),
         tax: Number(tax.toFixed(2)),
@@ -103,6 +112,8 @@ export default function CartPanel({
     setShowPaymentModal(false);
     setEmail("");
     setPaymentMethod("UPI");
+    setRating(5);
+    setReviewText("");
 
     const emailMsg = email ? ` Receipt emailed to ${email}.` : "";
     alert(`✅ Payment of $${receiptPayload.summary.grandTotal.toFixed(2)} confirmed via ${paymentMethod}. Ticket ${ticketId} saved.${emailMsg}`);
@@ -209,6 +220,18 @@ export default function CartPanel({
       {/* Action Buttons */}
       <div className={styles.actionContainer}>
         <button
+          className={`${styles.openBillBtn} ${isEmpty ? styles.disabledBtn : ""}`}
+          onClick={() => {
+            if (!isEmpty) {
+              window.open('/bill?cart=true', '_blank');
+            }
+          }}
+          disabled={isEmpty}
+          title="Open bill in another window"
+        >
+          📂 OPEN BILL
+        </button>
+        <button
           className={`${styles.draftBtn} ${isEmpty ? styles.disabledBtn : ""}`}
           onClick={() => handleCheckout("Draft")}
           disabled={isEmpty}
@@ -231,67 +254,168 @@ export default function CartPanel({
       {showPaymentModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.paymentModal}>
-            <h3 className={styles.modalTitle}>Checkout Payment</h3>
-            
-            <div className={styles.modalSection}>
-              <label className={styles.inputLabel}>Customer Email <span style={{opacity:0.6, fontSize:'0.8em'}}>(optional — for receipt)</span></label>
-              <input
-                type="email"
-                placeholder="customer@email.com (leave blank for no receipt)"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.modalInput}
-                autoFocus
-              />
-            </div>
-            
-            <div className={styles.modalSection}>
-              <label className={styles.inputLabel}>Select Method</label>
-              <div className={styles.paymentGrid}>
-                {["UPI", "Card", "Cash"].map((method) => (
+            {checkoutStep === "method" && (
+              <>
+                <h3 className={styles.modalTitle}>Checkout Payment</h3>
+                
+                <div className={styles.modalSection}>
+                  <label className={styles.inputLabel}>Customer Email <span style={{opacity:0.6, fontSize:'0.8em'}}>(optional — for receipt)</span></label>
+                  <input
+                    type="email"
+                    placeholder="customer@email.com (leave blank for no receipt)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className={styles.modalInput}
+                    autoFocus
+                  />
+                </div>
+                
+                <div className={styles.modalSection}>
+                  <label className={styles.inputLabel}>Select Method</label>
+                  <div className={styles.paymentGrid}>
+                    {["UPI", "Card", "Cash"].map((method) => (
+                      <button
+                        key={method}
+                        type="button"
+                        className={`${styles.paymentBtn} ${paymentMethod === method ? styles.activePaymentBtn : ""}`}
+                        onClick={() => setPaymentMethod(method)}
+                      >
+                        <span className={styles.paymentIcon}>
+                          {method === "UPI" && "📱"}
+                          {method === "Card" && "💳"}
+                          {method === "Cash" && "💵"}
+                        </span>
+                        {method}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className={styles.totalsSummary}>
+                  <div className={styles.totalRow}>
+                    <span>Amount Due:</span>
+                    <span className={styles.totalVal}>${grandTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className={styles.modalActions}>
                   <button
-                    key={method}
                     type="button"
-                    className={`${styles.paymentBtn} ${paymentMethod === method ? styles.activePaymentBtn : ""}`}
-                    onClick={() => setPaymentMethod(method)}
+                    className={styles.cancelBtn}
+                    onClick={() => {
+                      setShowPaymentModal(false);
+                      setEmail("");
+                    }}
                   >
-                    <span className={styles.paymentIcon}>
-                      {method === "UPI" && "📱"}
-                      {method === "Card" && "💳"}
-                      {method === "Cash" && "💵"}
-                    </span>
-                    {method}
+                    Cancel
                   </button>
-                ))}
-              </div>
-            </div>
+                  <button
+                    type="button"
+                    className={styles.confirmBtn}
+                    onClick={() => {
+                      if (paymentMethod === "UPI") {
+                        setCheckoutStep("upi_qr");
+                      } else {
+                        setCheckoutStep("success_review");
+                      }
+                    }}
+                  >
+                    Proceed to Pay →
+                  </button>
+                </div>
+              </>
+            )}
 
-            <div className={styles.totalsSummary}>
-              <div className={styles.totalRow}>
-                <span>Amount Due:</span>
-                <span className={styles.totalVal}>${grandTotal.toFixed(2)}</span>
-              </div>
-            </div>
+            {checkoutStep === "upi_qr" && (
+              <>
+                <h3 className={styles.modalTitle}>📱 Scan UPI QR Code</h3>
+                <div className={styles.qrCodeSection}>
+                  <div className={styles.qrWrapper}>
+                    <img 
+                      src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=upi://pay?pa=oakandbean@okaxis%26pn=Oak%2520and%2520Bean%26am=${grandTotal.toFixed(2)}%26cu=USD`} 
+                      alt="UPI Payment QR Code" 
+                      className={styles.qrImage}
+                    />
+                    <div className={styles.scannerLine}></div>
+                  </div>
+                  <p className={styles.qrText}>Scan using any UPI App (GPay, PhonePe, Paytm)</p>
+                </div>
 
-            <div className={styles.modalActions}>
-              <button
-                type="button"
-                className={styles.cancelBtn}
-                onClick={() => {
-                  setShowPaymentModal(false);
-                  setEmail("");
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className={styles.confirmBtn}
-                onClick={handlePaymentComplete}
-              >
-                Pay & Email
-              </button>
-            </div>
+                <div className={styles.totalsSummary}>
+                  <div className={styles.totalRow}>
+                    <span>UPI Total:</span>
+                    <span className={styles.totalVal}>${grandTotal.toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className={styles.modalActions}>
+                  <button
+                    type="button"
+                    className={styles.cancelBtn}
+                    onClick={() => setCheckoutStep("method")}
+                  >
+                    ← Back
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.confirmBtn}
+                    onClick={() => setCheckoutStep("success_review")}
+                  >
+                    Confirm Payment
+                  </button>
+                </div>
+              </>
+            )}
+
+            {checkoutStep === "success_review" && (
+              <>
+                <div className={styles.successHeader}>
+                  <div className={styles.successCheckmark}>
+                    <svg viewBox="0 0 52 52" className={styles.checkmarkSvg}>
+                      <circle cx="26" cy="26" r="25" fill="none" className={styles.checkmarkCircle}/>
+                      <path d="M14.1 27.2l7.1 7.2 16.7-16.8" fill="none" className={styles.checkmarkCheck}/>
+                    </svg>
+                  </div>
+                  <h3 className={styles.successTitle}>Payment Done!</h3>
+                  <p className={styles.successSub}>Thank you, ticket will be sent to the kitchen.</p>
+                </div>
+
+                <div className={styles.reviewSection}>
+                  <h4 className={styles.reviewTitle}>Rate your diner experience:</h4>
+                  <div className={styles.starsRow}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        className={`${styles.starBtn} ${rating >= star ? styles.starFilled : styles.starEmpty}`}
+                        onClick={() => setRating(star)}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+
+                  <textarea
+                    placeholder="Write a review (optional)..."
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    className={styles.reviewInput}
+                    rows="3"
+                  />
+                </div>
+
+                <div className={styles.modalActions}>
+                  <button
+                    type="button"
+                    className={styles.confirmBtn}
+                    style={{ width: "100%" }}
+                    onClick={handlePaymentComplete}
+                  >
+                    Submit Review & Save
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
