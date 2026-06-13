@@ -4,7 +4,7 @@
   gap: 10px;
   padding: 15px 20px;
   border-bottom: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.01);
+  background: #ffffff; /* Clean white card look */
 }
 
 .label {
@@ -33,7 +33,7 @@
 }
 
 .tabsList::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #EADFD3;
   border-radius: 2px;
 }
 
@@ -48,13 +48,13 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  background: rgba(7, 6, 15, 0.4);
+  background: #FAF8F5; /* Cream base for button */
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: var(--font-sans), sans-serif;
 }
 
 .tabBtn:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: #F2ECE4;
   transform: translateY(-1px);
 }
 
@@ -66,10 +66,10 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  box-shadow: 0 0 8px currentColor;
+  box-shadow: none;
 }
 
 .activeTab .dot {
   background-color: #fff !important;
-  box-shadow: 0 0 8px #fff;
+  box-shadow: none;
 }

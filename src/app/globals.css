@@ -1,26 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
 :root {
-  --bg-dark: #07060f;
-  --bg-panel: rgba(15, 13, 30, 0.65);
-  --bg-card: rgba(28, 24, 52, 0.5);
-  --bg-card-hover: rgba(46, 39, 82, 0.7);
-  --neon-cyan: #00f2fe;
-  --neon-cyan-glow: rgba(0, 242, 254, 0.4);
-  --neon-pink: #ff007f;
-  --neon-pink-glow: rgba(255, 0, 127, 0.4);
-  --neon-orange: #ff9f43;
-  --neon-orange-glow: rgba(255, 159, 67, 0.4);
-  --neon-green: #39ff14;
-  --neon-green-glow: rgba(57, 255, 20, 0.4);
-  --text-primary: #ffffff;
-  --text-secondary: #c2bddb;
-  --text-muted: #7f7a9e;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(0, 242, 254, 0.25);
-  --glass-blur: blur(12px);
-  --shadow-neon: 0 0 15px rgba(0, 242, 254, 0.35);
-  --shadow-neon-pink: 0 0 15px rgba(255, 0, 127, 0.35);
-  --font-sans: "Arial", sans-serif;
-  --font-mono: "Arial", sans-serif;
+  --bg-dark: #FAF8F5; /* Warm creamy white base */
+  --bg-panel: #ffffff; /* Clean solid white panels */
+  --bg-card: #ffffff; /* Card base */
+  --bg-card-hover: #FCFAF6; /* Very light warm cream on hover */
+  
+  /* Natural wood tones mapped from neon variables to maintain code compatibility */
+  --neon-cyan: #8C6239; /* Polished Teak / Oak */
+  --neon-cyan-glow: rgba(140, 98, 57, 0.15);
+  
+  --neon-pink: #C15C3D; /* Terracotta / Brick Accent */
+  --neon-pink-glow: rgba(193, 92, 61, 0.15);
+  
+  --neon-orange: #C2915C; /* Golden Oak */
+  --neon-orange-glow: rgba(194, 145, 92, 0.15);
+  
+  --neon-green: #5E806D; /* Cozy Sage Green */
+  --neon-green-glow: rgba(94, 128, 109, 0.15);
+  
+  /* Text and borders */
+  --text-primary: #2E1F15; /* Rich dark walnut espresso */
+  --text-secondary: #5E4E42; /* Oak brown */
+  --text-muted: #9E8C80; /* Warm taupe gray */
+  --border-color: rgba(140, 98, 57, 0.12); /* Clean sand-colored divider */
+  --border-glow: rgba(140, 98, 57, 0.08);
+  --glass-blur: none;
+  
+  --shadow-neon: 0 4px 15px rgba(140, 98, 57, 0.06);
+  --shadow-neon-pink: 0 4px 15px rgba(193, 92, 61, 0.08);
+  
+  /* Typography */
+  --font-sans: "Outfit", sans-serif;
+  --font-mono: "Outfit", sans-serif;
+  
+  /* Wood Specific gradients */
+  --wood-grain-dark: linear-gradient(135deg, #4A3319 0%, #352310 100%);
+  --wood-grain-light: linear-gradient(135deg, #EADFD3 0%, #D8C7B5 100%);
+  --wood-grain-accent: linear-gradient(135deg, #8C6239 0%, #704E2D 100%);
 }
 
 /* Base resets */
@@ -39,27 +56,20 @@ body {
   overflow: hidden;
   color: var(--text-primary);
   background-color: var(--bg-dark);
+  /* Subtly textured background */
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-  background-size: 50px 50px;
-  background-position: center;
+    radial-gradient(rgba(140, 98, 57, 0.04) 1px, transparent 0),
+    radial-gradient(rgba(140, 98, 57, 0.02) 1.5px, transparent 0);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Neon animated scanlines */
+/* Disabled CRT Scanline overlay for clean paper theme */
 body::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0; left: 0; bottom: 0; right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 99999;
-  background-size: 100% 4px, 6px 100%;
-  pointer-events: none;
-  opacity: 0.15;
+  display: none;
 }
 
 /* Custom Webkit scrollbars */
@@ -69,65 +79,62 @@ body::before {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(7, 6, 15, 0.5);
+  background: #F5F1EB;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 242, 254, 0.4);
+  background: #C2915C;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid #F5F1EB;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--neon-cyan);
-  box-shadow: 0 0 10px var(--neon-cyan);
 }
 
 /* Utilities */
 .glassmorphic {
   background: var(--bg-panel);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--border-color);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 30px rgba(140, 98, 57, 0.05);
   border-radius: 12px;
 }
 
 .text-neon-cyan {
   color: var(--neon-cyan);
-  text-shadow: 0 0 5px var(--neon-cyan-glow), 0 0 10px var(--neon-cyan-glow);
+  text-shadow: none;
 }
 
 .text-neon-pink {
   color: var(--neon-pink);
-  text-shadow: 0 0 5px var(--neon-pink-glow), 0 0 10px var(--neon-pink-glow);
+  text-shadow: none;
 }
 
 .text-neon-orange {
   color: var(--neon-orange);
-  text-shadow: 0 0 5px var(--neon-orange-glow), 0 0 10px var(--neon-orange-glow);
+  text-shadow: none;
 }
 
-/* Keyframes */
+/* Keyframes rewritten to be smooth organic fade transitions */
 @keyframes neon-pulse {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.2), inset 0 0 5px rgba(0, 242, 254, 0.1);
-    border-color: rgba(0, 242, 254, 0.3);
+    box-shadow: 0 4px 15px rgba(140, 98, 57, 0.05);
+    border-color: rgba(140, 98, 57, 0.15);
   }
   50% {
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(0, 242, 254, 0.2);
-    border-color: rgba(0, 242, 254, 0.7);
+    box-shadow: 0 8px 25px rgba(140, 98, 57, 0.12);
+    border-color: rgba(140, 98, 57, 0.3);
   }
 }
 
 @keyframes neon-pulse-pink {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 0, 127, 0.2), inset 0 0 5px rgba(255, 0, 127, 0.1);
-    border-color: rgba(255, 0, 127, 0.3);
+    box-shadow: 0 4px 15px rgba(193, 92, 61, 0.05);
+    border-color: rgba(193, 92, 61, 0.15);
   }
   50% {
-    box-shadow: 0 0 20px rgba(255, 0, 127, 0.5), inset 0 0 10px rgba(255, 0, 127, 0.2);
-    border-color: rgba(255, 0, 127, 0.7);
+    box-shadow: 0 8px 25px rgba(193, 92, 61, 0.12);
+    border-color: rgba(193, 92, 61, 0.3);
   }
 }

@@ -38,8 +38,8 @@ export default function TopBar({
       {/* Brand Logo & Tabs */}
       <div className={styles.leftSection}>
         <div className={styles.logo}>
-          <span className={styles.neonTextCyan}>NEON</span>
-          <span className={styles.neonTextPink}>DINER</span>
+          <span className={styles.neonTextCyan}>OAK &</span>
+          <span className={styles.neonTextPink}>BEAN</span>
         </div>
         <nav className={styles.nav}>
           <button 

@@ -2,7 +2,6 @@
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  /* Scrollbar styling */
   scrollbar-width: thin;
 }
 
@@ -13,20 +12,23 @@
   align-content: start;
 }
 
-/* Product Card Glass Styling */
+/* Product Card - Clean Paper card with wood shadow hover */
 .card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: left;
   height: 180px;
-  padding: 15px;
+  padding: 18px;
   cursor: pointer;
   background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
   user-select: none;
+  box-shadow: 0 4px 15px rgba(140, 98, 57, 0.04);
 }
 
 .card::after {
@@ -36,7 +38,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(800px circle at var(--x, 0) var(--y, 0), rgba(255, 255, 255, 0.06), transparent 40%);
+  background: radial-gradient(800px circle at var(--x, 0) var(--y, 0), rgba(140, 98, 57, 0.03), transparent 40%);
   opacity: 0;
   transition: opacity 0.5s;
   pointer-events: none;
@@ -50,7 +52,7 @@
   transform: translateY(-4px);
   background: var(--bg-card-hover);
   border-color: var(--active-border);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 15px var(--hover-glow);
+  box-shadow: 0 10px 25px rgba(140, 98, 57, 0.08), 0 0 12px var(--hover-glow);
 }
 
 .card:active {
@@ -68,10 +70,11 @@
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1.2px;
   border: 1px solid;
   border-radius: 4px;
   padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .cardBody {
@@ -80,10 +83,10 @@
 
 .productName {
   font-family: var(--font-sans), sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 600;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.25;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -109,36 +112,35 @@
 .price {
   font-family: var(--font-mono), monospace;
   font-size: 22px;
-  font-weight: 900;
+  font-weight: 700;
   color: var(--text-primary);
   line-height: 1;
 }
 
-/* Click feedback circle indicator */
+/* Subtle tap button */
 .tapIndicator {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  opacity: 0.15;
+  opacity: 0.3;
   transition: all 0.2s ease;
-  box-shadow: 0 0 10px currentColor;
 }
 
 .card:hover .tapIndicator {
-  opacity: 1;
+  opacity: 0.9;
   transform: scale(1.1);
 }
 
 .tapIcon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
-/* Empty State Styling */
+/* Empty State - Clean dotted paper box */
 .emptyContainer {
   display: flex;
   align-items: center;
@@ -153,20 +155,20 @@
   width: 100%;
   padding: 40px 30px;
   text-align: center;
-  border-color: var(--neon-pink);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 0, 127, 0.1);
-  animation: neon-pulse-pink 3s infinite;
+  border: 1px dashed var(--border-color);
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(140, 98, 57, 0.04);
 }
 
 .emptyIconContainer {
   display: inline-flex;
   padding: 15px;
-  background: rgba(255, 0, 127, 0.05);
+  background: #FAF8F5;
   border-radius: 50%;
-  border: 1px solid var(--neon-pink);
+  border: 1px solid var(--border-color);
   margin-bottom: 20px;
-  color: var(--neon-pink);
-  box-shadow: 0 0 15px rgba(255, 0, 127, 0.2);
+  color: var(--neon-cyan);
 }
 
 .emptyIcon {
@@ -176,16 +178,16 @@
 
 .emptyTitle {
   font-family: var(--font-mono), monospace;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   margin-bottom: 10px;
 }
 
 .emptySubtitle {
   font-family: var(--font-sans), sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
   line-height: 1.5;
 }

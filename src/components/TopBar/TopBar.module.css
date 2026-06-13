@@ -8,8 +8,9 @@
   position: relative;
   z-index: 1000;
   border-radius: 0;
-  border-bottom: 1px solid var(--border-color);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  background: var(--wood-grain-dark); /* Solid walnut wood plank header */
+  border-bottom: 2px solid #352310;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
 
 .leftSection {
@@ -20,32 +21,30 @@
 
 .logo {
   font-family: var(--font-mono), monospace;
-  font-weight: 900;
+  font-weight: 800;
   font-size: 20px;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
   display: flex;
-  gap: 4px;
+  gap: 6px;
 }
 
 .neonTextCyan {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-cyan-glow);
+  color: #FAF8F5; /* Warm birch wood white */
 }
 
 .neonTextPink {
-  color: var(--neon-pink);
-  text-shadow: 0 0 10px var(--neon-pink-glow);
+  color: #D4A373; /* Warm golden honey accent */
 }
 
 .nav {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .navBtn {
   background: transparent;
   border: 1px solid transparent;
-  color: var(--text-secondary);
+  color: #E2D7CB;
   padding: 6px 14px;
   border-radius: 6px;
   font-weight: 600;
@@ -56,15 +55,15 @@
 }
 
 .navBtn:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .activeNav {
-  color: var(--neon-cyan);
-  border-color: var(--neon-cyan);
-  background: rgba(0, 242, 254, 0.05);
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.15);
+  color: #ffffff;
+  border-color: #D4A373;
+  background: rgba(212, 163, 115, 0.15);
+  box-shadow: 0 0 10px rgba(212, 163, 115, 0.1);
 }
 
 /* Search bar styling */
@@ -86,7 +85,7 @@
   left: 12px;
   width: 18px;
   height: 18px;
-  color: var(--text-muted);
+  color: #C5B9AC;
   pointer-events: none;
 }
 
@@ -94,20 +93,24 @@
   width: 100%;
   height: 38px;
   padding: 0 35px 0 40px;
-  background: rgba(7, 6, 15, 0.65);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
-  color: var(--text-primary);
+  color: #ffffff;
   font-size: 14px;
   transition: all 0.3s ease;
   font-family: var(--font-sans), sans-serif;
 }
 
+.searchInput::placeholder {
+  color: #A39382;
+}
+
 .searchInput:focus {
   outline: none;
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 10px var(--neon-cyan-glow);
-  background: rgba(7, 6, 15, 0.95);
+  border-color: #D4A373;
+  box-shadow: 0 0 10px rgba(212, 163, 115, 0.2);
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .clearSearch {
@@ -115,14 +118,14 @@
   right: 12px;
   background: transparent;
   border: none;
-  color: var(--text-muted);
+  color: #C5B9AC;
   font-size: 18px;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .clearSearch:hover {
-  color: var(--neon-pink);
+  color: #ffffff;
 }
 
 /* Right Section buttons & modals */
@@ -140,8 +143,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
   padding: 6px 12px;
   cursor: pointer;
@@ -153,21 +156,21 @@
 
 .overlayTrigger:hover,
 .activeTrigger {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 8px rgba(255, 0, 127, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #D4A373;
+  box-shadow: 0 0 8px rgba(212, 163, 115, 0.2);
 }
 
 .tableTrigger:hover,
 .tableTrigger.activeTrigger {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+  border-color: #D4A373;
+  box-shadow: 0 0 8px rgba(212, 163, 115, 0.2);
 }
 
 .btnIcon {
   width: 20px;
   height: 20px;
-  color: var(--text-secondary);
+  color: #E2D7CB;
 }
 
 .triggerLabel {
@@ -177,7 +180,7 @@
 
 .subText {
   font-size: 10px;
-  color: var(--text-muted);
+  color: #A39382;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -185,7 +188,7 @@
 .mainText {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffffff;
   max-width: 110px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -200,15 +203,16 @@
   width: 280px;
   padding: 15px;
   z-index: 1100;
-  border-color: var(--neon-pink);
+  background: #ffffff;
+  border: 1px solid #C2915C;
+  border-radius: 8px;
   animation: modalFadeIn 0.2s ease-out;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 15px rgba(255, 0, 127, 0.15);
+  box-shadow: 0 10px 40px rgba(92, 58, 33, 0.15), 0 0 15px rgba(212, 163, 115, 0.1);
 }
 
 .tableModal {
   width: 260px;
-  border-color: var(--neon-cyan);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 15px rgba(0, 242, 254, 0.15);
+  border-color: #C2915C;
 }
 
 @keyframes modalFadeIn {
@@ -229,6 +233,7 @@
   margin-bottom: 12px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .inputGroup {
@@ -239,7 +244,7 @@
   width: 100%;
   height: 36px;
   padding: 0 10px;
-  background: rgba(7, 6, 15, 0.8);
+  background: #FAF8F5;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   color: var(--text-primary);
@@ -250,8 +255,8 @@
 
 .customInput:focus {
   outline: none;
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 8px var(--neon-pink-glow);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 8px rgba(140, 98, 57, 0.15);
 }
 
 .divider {
@@ -283,13 +288,13 @@
 }
 
 .presetItem:hover {
-  background: rgba(255, 0, 127, 0.1);
-  color: var(--neon-pink);
+  background: #FAF3EC;
+  color: var(--neon-cyan);
 }
 
 .selectedPreset {
-  background: rgba(255, 0, 127, 0.15);
-  color: var(--neon-pink);
+  background: #FAF3EC;
+  color: var(--neon-cyan);
   font-weight: 600;
 }
 
@@ -302,7 +307,7 @@
 
 .tableBtn {
   height: 45px;
-  background: rgba(255, 255, 255, 0.02);
+  background: #FAF8F5;
   border: 1px solid var(--border-color);
   border-radius: 6px;
   color: var(--text-secondary);
@@ -317,15 +322,14 @@
 }
 
 .tableBtn:hover {
-  background: rgba(0, 242, 254, 0.08);
+  background: #FAF3EC;
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
-  box-shadow: 0 0 8px var(--neon-cyan-glow);
 }
 
 .selectedTableBtn {
-  background: rgba(0, 242, 254, 0.15);
+  background: #FAF3EC;
   border-color: var(--neon-cyan);
   color: var(--neon-cyan);
-  box-shadow: 0 0 10px var(--neon-cyan-glow);
+  box-shadow: 0 0 10px rgba(140, 98, 57, 0.15);
 }

@@ -26,7 +26,7 @@
   flex-direction: column;
   overflow: hidden;
   border-right: 1px solid var(--border-color);
-  background: rgba(0, 0, 0, 0.2);
+  background: transparent;
 }
 
 .rightColumn {
@@ -67,9 +67,9 @@
 
 .mobileActiveTab {
   color: var(--neon-cyan);
-  background: rgba(0, 242, 254, 0.05);
-  border: 1px solid rgba(0, 242, 254, 0.2);
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+  background: rgba(140, 98, 57, 0.05);
+  border: 1px solid rgba(140, 98, 57, 0.15);
+  box-shadow: 0 4px 10px rgba(140, 98, 57, 0.04);
 }
 
 .cartBadge {
@@ -84,7 +84,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 8px var(--neon-pink-glow);
+  box-shadow: 0 2px 8px rgba(193, 92, 61, 0.15);
 }
 
 /* Responsiveness adjustments */
@@ -170,13 +170,13 @@
 
 .orderHistoryCard:hover {
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(140, 98, 57, 0.2);
 }
 
 .activeOrderHistoryCard {
   border-color: var(--neon-cyan);
-  background: rgba(0, 242, 254, 0.05);
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+  background: rgba(140, 98, 57, 0.05);
+  box-shadow: 0 4px 12px rgba(140, 98, 57, 0.1);
 }
 
 .orderHistoryMeta {
@@ -259,7 +259,6 @@
   font-size: 16px;
   font-weight: 700;
   color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-cyan-glow);
   letter-spacing: 1px;
 }
 
@@ -269,10 +268,10 @@
   font-weight: 700;
   color: var(--neon-pink);
   border: 1px solid var(--neon-pink);
-  background: rgba(255, 0, 127, 0.05);
+  background: rgba(193, 92, 61, 0.05);
   padding: 2px 8px;
   border-radius: 4px;
-  box-shadow: 0 0 8px rgba(255, 0, 127, 0.15);
+  box-shadow: 0 2px 6px rgba(193, 92, 61, 0.1);
 }
 
 .receiptItemsList {
@@ -354,16 +353,48 @@
   justify-content: center;
   gap: 8px;
   transition: all 0.25s;
-  box-shadow: 0 0 10px rgba(0, 242, 254, 0.1);
+  box-shadow: 0 2px 8px rgba(140, 98, 57, 0.05);
   margin-top: 10px;
 }
 
 .reprintBtn:hover {
-  background: rgba(0, 242, 254, 0.05);
-  box-shadow: 0 0 15px rgba(0, 242, 254, 0.3);
+  background: rgba(140, 98, 57, 0.05);
+  box-shadow: 0 4px 12px rgba(140, 98, 57, 0.15);
   transform: translateY(-1px);
 }
 
 .reprintBtn:active {
   transform: translateY(0);
+}
+
+.emptyContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.emptyBox {
+  padding: 30px;
+  text-align: center;
+  border: 1px dashed var(--border-color) !important;
+  border-radius: 12px;
+  background: #ffffff;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(140, 98, 57, 0.04);
+}
+
+.emptyTitle {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: 1.5px;
+}
+
+.emptySubtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
