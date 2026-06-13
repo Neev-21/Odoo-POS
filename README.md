@@ -1,1 +1,1 @@
-# Oddo-POS
+# Odoo-POS
