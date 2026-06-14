@@ -7,6 +7,7 @@ import TopBar from "@/components/TopBar/TopBar";
 import CategoryTabs from "@/components/CategoryTabs/CategoryTabs";
 import ProductGrid from "@/components/ProductGrid/ProductGrid";
 import CartPanel from "@/components/CartPanel/CartPanel";
+import KdsDashboard from "@/components/KdsDashboard/KdsDashboard";
 
 export default function Home() {
   // Mock prompt/alert for non-blocking test automation (only when ?test=true is active)
@@ -25,7 +26,8 @@ export default function Home() {
   // Users list in local state for registration and login
   const [users, setUsers] = useState([
     { email: "admin@oakandbean.com", password: "admin123", role: "Admin", name: "Admin User" },
-    { email: "employee@oakandbean.com", password: "employee123", role: "Employee", name: "John Cashier" }
+    { email: "employee@oakandbean.com", password: "employee123", role: "Employee", name: "John Cashier" },
+    { email: "chef@oakandbean.com", password: "chef123", role: "Chef", name: "Chef Mario" }
   ]);
   const [currentUser, setCurrentUser] = useState(null); // null when not authenticated
 
@@ -59,6 +61,171 @@ export default function Home() {
   const [newProdName, setNewProdName] = useState("");
   const [newProdPrice, setNewProdPrice] = useState("");
   const [newProdCategory, setNewProdCategory] = useState("cat_1");
+  const [newProdKds, setNewProdKds] = useState(true);
+
+  // Load initial states from localStorage on mount (Client-only to avoid SSR mismatch)
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedPastOrders = localStorage.getItem("pos_past_orders");
+      if (storedPastOrders) {
+        try {
+          setPastOrders(JSON.parse(storedPastOrders));
+        } catch (e) {
+          console.error("Error parsing pos_past_orders:", e);
+        }
+      } else {
+        localStorage.setItem("pos_past_orders", JSON.stringify([]));
+      }
+
+      const storedProducts = localStorage.getItem("pos_products");
+      if (storedProducts) {
+        try {
+          setProducts(JSON.parse(storedProducts));
+        } catch (e) {
+          console.error("Error parsing pos_products:", e);
+        }
+      } else {
+        localStorage.setItem("pos_products", JSON.stringify(INITIAL_PRODUCTS));
+      }
+
+      const storedCart = localStorage.getItem("pos_active_cart");
+      if (storedCart) {
+        try {
+          setCart(JSON.parse(storedCart));
+        } catch (e) {
+          console.error("Error parsing pos_active_cart:", e);
+        }
+      }
+
+      const storedUsers = localStorage.getItem("pos_users");
+      if (storedUsers) {
+        try {
+          setUsers(JSON.parse(storedUsers));
+        } catch (e) {
+          console.error("Error parsing pos_users:", e);
+        }
+      } else {
+        localStorage.setItem("pos_users", JSON.stringify(users));
+      }
+
+      const storedUser = localStorage.getItem("pos_current_user");
+      if (storedUser) {
+        try {
+          const user = JSON.parse(storedUser);
+          setCurrentUser(user);
+          setRole(user.role);
+          if (user.role === "Admin") {
+            setCurrentView("orders");
+          }
+        } catch (e) {
+          console.error("Error parsing pos_current_user:", e);
+        }
+      }
+    }
+  }, []);
+
+  // Save states to localStorage on change
+  useEffect(() => {
+    if (typeof window !== "undefined" && pastOrders.length > 0) {
+      localStorage.setItem("pos_past_orders", JSON.stringify(pastOrders));
+    } else if (typeof window !== "undefined" && pastOrders.length === 0) {
+      // Don't overwrite if we just initialized to empty array on SSR mount, but do set if it's explicitly cleared
+      const stored = localStorage.getItem("pos_past_orders");
+      if (stored && JSON.parse(stored).length > 0) {
+        // We have items stored, but pastOrders is empty (mounting state). Let's populate from storage first.
+        try {
+          setPastOrders(JSON.parse(stored));
+        } catch(e) {}
+      } else {
+        localStorage.setItem("pos_past_orders", JSON.stringify([]));
+      }
+    }
+  }, [pastOrders]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Don't overwrite if products is empty or default on initial mount before loading from localStorage
+      const stored = localStorage.getItem("pos_products");
+      if (products === INITIAL_PRODUCTS && stored) {
+        try {
+          setProducts(JSON.parse(stored));
+        } catch(e) {}
+      } else {
+        localStorage.setItem("pos_products", JSON.stringify(products));
+      }
+    }
+  }, [products]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pos_active_cart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("pos_users", JSON.stringify(users));
+    }
+  }, [users]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (currentUser) {
+        localStorage.setItem("pos_current_user", JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem("pos_current_user");
+      }
+    }
+  }, [currentUser]);
+
+  // Synchronize state changes across tabs/windows in real time
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === "pos_past_orders" && e.newValue) {
+        try {
+          setPastOrders(JSON.parse(e.newValue));
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (e.key === "pos_products" && e.newValue) {
+        try {
+          setProducts(JSON.parse(e.newValue));
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (e.key === "pos_active_cart" && e.newValue) {
+        try {
+          setCart(JSON.parse(e.newValue));
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (e.key === "pos_users" && e.newValue) {
+        try {
+          setUsers(JSON.parse(e.newValue));
+        } catch (err) {
+          console.error(err);
+        }
+      } else if (e.key === "pos_current_user") {
+        if (e.newValue) {
+          try {
+            const user = JSON.parse(e.newValue);
+            setCurrentUser(user);
+            setRole(user.role);
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          setCurrentUser(null);
+          setRole("Employee");
+        }
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   // Derived: Filter past orders based on search and status (Memoized)
   const filteredPastOrders = useMemo(() => {
@@ -221,6 +388,8 @@ export default function Home() {
         setRole(found.role);
         if (found.role === "Admin") {
           setCurrentView("orders");
+        } else if (found.role === "Chef") {
+          setCurrentView("kds");
         } else {
           setCurrentView("pos");
         }
@@ -252,6 +421,8 @@ export default function Home() {
       setRole(newUser.role);
       if (newUser.role === "Admin") {
         setCurrentView("orders");
+      } else if (newUser.role === "Chef") {
+        setCurrentView("kds");
       } else {
         setCurrentView("pos");
       }
@@ -278,13 +449,24 @@ export default function Home() {
       id: `prod_${Date.now()}`,
       category_id: newProdCategory,
       name: newProdName.trim(),
-      price: parseFloat(newProdPrice) || 0
+      price: parseFloat(newProdPrice) || 0,
+      kds: newProdKds
     };
 
     setProducts(prev => [...prev, newProduct]);
     setNewProdName("");
     setNewProdPrice("");
+    setNewProdKds(true);
     alert(`Successfully added "${newProduct.name}" to the menu catalog!`);
+  };
+
+  const handleToggleProductKds = (productId) => {
+    setProducts(prev => prev.map(p => {
+      if (p.id === productId) {
+        return { ...p, kds: !p.kds };
+      }
+      return p;
+    }));
   };
 
   const handleUpdateProductPrice = (productId, newPrice) => {
@@ -311,6 +493,9 @@ export default function Home() {
     let upiRevenue = 0;
     let cardRevenue = 0;
     let cashRevenue = 0;
+    let totalRatings = 0;
+    let ratedOrdersCount = 0;
+    const reviewLogs = [];
 
     pastOrders.forEach(o => {
       if (o.status === "Paid") {
@@ -318,12 +503,26 @@ export default function Home() {
         if (o.paymentMethod === "UPI") upiRevenue += o.summary.grandTotal;
         else if (o.paymentMethod === "Card") cardRevenue += o.summary.grandTotal;
         else if (o.paymentMethod === "Cash") cashRevenue += o.summary.grandTotal;
+        
+        if (o.rating > 0) {
+          totalRatings += o.rating;
+          ratedOrdersCount += 1;
+          reviewLogs.push({
+            id: o.id,
+            customer: o.customer,
+            rating: o.rating,
+            reviewText: o.reviewText || "No comment left",
+            timestamp: o.timestamp
+          });
+        }
       } else {
         draftRevenue += o.summary.grandTotal;
       }
     });
 
     const grandPaid = totalRevenue || 1; // avoid division by zero
+    const averageRating = ratedOrdersCount > 0 ? (totalRatings / ratedOrdersCount) : 5.0;
+
     return {
       totalRevenue,
       draftRevenue,
@@ -332,11 +531,13 @@ export default function Home() {
       cashRevenue,
       upiPct: (upiRevenue / grandPaid) * 100,
       cardPct: (cardRevenue / grandPaid) * 100,
-      cashPct: (cashRevenue / grandPaid) * 100
+      cashPct: (cashRevenue / grandPaid) * 100,
+      averageRating,
+      reviewLogs
     };
   }, [pastOrders]);
 
-  const { totalRevenue, draftRevenue, upiRevenue, cardRevenue, cashRevenue, upiPct, cardPct, cashPct } = analytics;
+  const { totalRevenue, draftRevenue, upiRevenue, cardRevenue, cashRevenue, upiPct, cardPct, cashPct, averageRating, reviewLogs } = analytics;
 
   if (!currentUser) {
     return (
@@ -427,10 +628,17 @@ export default function Home() {
                   </button>
                   <button
                     type="button"
+                    className={`${styles.roleOption} ${authRole === "Chef" ? styles.selectedRoleOption : ""}`}
+                    onClick={() => setAuthRole("Chef")}
+                  >
+                    Chef (Kitchen)
+                  </button>
+                  <button
+                    type="button"
                     className={`${styles.roleOption} ${authRole === "Admin" ? styles.selectedRoleOption : ""}`}
                     onClick={() => setAuthRole("Admin")}
                   >
-                    Admin (User Manager)
+                    Admin (Manager)
                   </button>
                 </div>
               </div>
@@ -453,7 +661,7 @@ export default function Home() {
                   setAuthMode("login");
                 }}
               >
-                🔐 Admin demo
+                🔐 Admin
               </button>
               <button
                 type="button"
@@ -464,7 +672,18 @@ export default function Home() {
                   setAuthMode("login");
                 }}
               >
-                🔑 Employee demo
+                🔑 Employee
+              </button>
+              <button
+                type="button"
+                className={styles.quickBtn}
+                onClick={() => {
+                  setAuthEmail("chef@oakandbean.com");
+                  setAuthPassword("chef123");
+                  setAuthMode("login");
+                }}
+              >
+                🍳 Chef
               </button>
             </div>
           </div>
@@ -495,7 +714,11 @@ export default function Home() {
 
       {/* Main Column Splitter */}
       <main className={styles.mainLayout}>
-        {currentView === "pos" ? (
+        {currentView === "kds" ? (
+          <div style={{ width: "100%", height: "100%" }}>
+            <KdsDashboard />
+          </div>
+        ) : currentView === "pos" ? (
           <>
             {/* Left Column - Categories & Catalog grid */}
             <section
@@ -635,27 +858,56 @@ export default function Home() {
                             {pastOrders.length}
                           </span>
                         </div>
+                        <div className={styles.analyticsBlock}>
+                          <span className={styles.analyticsLabel}>⭐ Average Diner Rating</span>
+                          <span className={styles.analyticsValue} style={{ color: "#FFB300" }}>
+                            {averageRating.toFixed(1)} / 5.0
+                          </span>
+                        </div>
                       </div>
-                      <div className={styles.paymentBreakdown}>
-                        <h4 className={styles.breakdownTitle}>Revenue by Payment Method</h4>
-                        <div className={styles.paymentBarContainer}>
-                          <div className={styles.paymentBarItem}>
-                            <span className={styles.barLabel}>📱 UPI: ${upiRevenue.toFixed(2)}</span>
-                            <div className={styles.barOuter}>
-                              <div className={styles.barInnerUPI} style={{ width: `${upiPct}%` }} />
+
+                      <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "20px", marginTop: "10px" }}>
+                        <div className={styles.paymentBreakdown}>
+                          <h4 className={styles.breakdownTitle}>Revenue by Payment Method</h4>
+                          <div className={styles.paymentBarContainer}>
+                            <div className={styles.paymentBarItem}>
+                              <span className={styles.barLabel}>📱 UPI: ${upiRevenue.toFixed(2)}</span>
+                              <div className={styles.barOuter}>
+                                <div className={styles.barInnerUPI} style={{ width: `${upiPct}%` }} />
+                              </div>
+                            </div>
+                            <div className={styles.paymentBarItem}>
+                              <span className={styles.barLabel}>💳 Card: ${cardRevenue.toFixed(2)}</span>
+                              <div className={styles.barOuter}>
+                                <div className={styles.barInnerCard} style={{ width: `${cardPct}%` }} />
+                              </div>
+                            </div>
+                            <div className={styles.paymentBarItem}>
+                              <span className={styles.barLabel}>💵 Cash: ${cashRevenue.toFixed(2)}</span>
+                              <div className={styles.barOuter}>
+                                <div className={styles.barInnerCash} style={{ width: `${cashPct}%` }} />
+                              </div>
                             </div>
                           </div>
-                          <div className={styles.paymentBarItem}>
-                            <span className={styles.barLabel}>💳 Card: ${cardRevenue.toFixed(2)}</span>
-                            <div className={styles.barOuter}>
-                              <div className={styles.barInnerCard} style={{ width: `${cardPct}%` }} />
-                            </div>
-                          </div>
-                          <div className={styles.paymentBarItem}>
-                            <span className={styles.barLabel}>💵 Cash: ${cashRevenue.toFixed(2)}</span>
-                            <div className={styles.barOuter}>
-                              <div className={styles.barInnerCash} style={{ width: `${cashPct}%` }} />
-                            </div>
+                        </div>
+
+                        {/* Customer Reviews Log */}
+                        <div className={styles.reviewsLogSection}>
+                          <h4 className={styles.breakdownTitle}>Customer Reviews & Feedback ({reviewLogs.length})</h4>
+                          <div className={styles.reviewsLogScroll}>
+                            {reviewLogs.length === 0 ? (
+                              <div className={styles.emptyReviews}>No customer ratings submitted yet.</div>
+                            ) : (
+                              reviewLogs.map((log, idx) => (
+                                <div key={idx} className={styles.reviewLogCard}>
+                                  <div className={styles.reviewLogHeader}>
+                                    <span className={styles.reviewLogCust}>{log.customer} ({log.id})</span>
+                                    <span className={styles.reviewLogStars}>{"★".repeat(log.rating)}{"☆".repeat(5 - log.rating)}</span>
+                                  </div>
+                                  <p className={styles.reviewLogText}>"{log.reviewText}"</p>
+                                </div>
+                              ))
+                            )}
                           </div>
                         </div>
                       </div>
@@ -707,6 +959,17 @@ export default function Home() {
                               <option value="cat_5">Sides</option>
                             </select>
                           </div>
+                          <div className={styles.formFieldCheckbox}>
+                            <label className={styles.checkboxLabel}>
+                              <input
+                                type="checkbox"
+                                checked={newProdKds}
+                                onChange={(e) => setNewProdKds(e.target.checked)}
+                                className={styles.checkboxInput}
+                              />
+                              Send to KDS
+                            </label>
+                          </div>
                           <button type="submit" className={styles.addProductBtn}>
                             Add Item
                           </button>
@@ -738,6 +1001,14 @@ export default function Home() {
                                       className={styles.priceInputSmall}
                                     />
                                   </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleToggleProductKds(p.id)}
+                                    className={p.kds ? styles.kdsBtnEnabled : styles.kdsBtnDisabled}
+                                    title="Toggle Kitchen Display status"
+                                  >
+                                    {p.kds ? "🍳 KDS" : "🍽️ KDS"}
+                                  </button>
                                   <button
                                     type="button"
                                     onClick={() => handleDeleteProduct(p.id)}
@@ -893,6 +1164,12 @@ export default function Home() {
                   {selectedPastOrder.status === "Draft" ? (
                     <div className={styles.receiptActions}>
                       <button 
+                        className={styles.viewBillBtn}
+                        onClick={() => window.open(`/bill?orderId=${selectedPastOrder.id}`, '_blank')}
+                      >
+                        📂 Open Bill
+                      </button>
+                      <button 
                         className={styles.editBtn}
                         onClick={() => handleEditDraft(selectedPastOrder)}
                       >
@@ -921,7 +1198,14 @@ export default function Home() {
                       </button>
                     </div>
                   ) : (
-                    <div className={styles.receiptActionsPaid}>
+                    <div className={styles.receiptActionsPaid} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      <button 
+                        className={styles.viewBillBtn}
+                        onClick={() => window.open(`/bill?orderId=${selectedPastOrder.id}`, '_blank')}
+                        style={{ width: '100%', height: '36px' }}
+                      >
+                        📂 Open Bill
+                      </button>
                       <div className={styles.emailInputGroup}>
                         <input
                           type="email"

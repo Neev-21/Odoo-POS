@@ -53,18 +53,30 @@ export default function TopBar({
           <span className={styles.neonTextPink}>BEAN</span>
         </div>
         <nav className={styles.nav}>
-          <button 
-            className={`${styles.navBtn} ${currentView === "pos" ? styles.activeNav : ""}`}
-            onClick={() => setCurrentView("pos")}
-          >
-            POS Order
-          </button>
-          <button 
-            className={`${styles.navBtn} ${currentView === "orders" ? styles.activeNav : ""}`}
-            onClick={() => setCurrentView("orders")}
-          >
-            Orders
-          </button>
+          {currentUser && currentUser.role !== "Chef" && (
+            <button 
+              className={`${styles.navBtn} ${currentView === "pos" ? styles.activeNav : ""}`}
+              onClick={() => setCurrentView("pos")}
+            >
+              POS Order
+            </button>
+          )}
+          {currentUser && currentUser.role !== "Chef" && (
+            <button 
+              className={`${styles.navBtn} ${currentView === "orders" ? styles.activeNav : ""}`}
+              onClick={() => setCurrentView("orders")}
+            >
+              Orders
+            </button>
+          )}
+          {currentUser && (currentUser.role === "Chef" || currentUser.role === "Admin") && (
+            <button 
+              className={`${styles.navBtn} ${currentView === "kds" ? styles.activeNav : ""}`}
+              onClick={() => setCurrentView("kds")}
+            >
+              KDS
+            </button>
+          )}
         </nav>
       </div>
 
@@ -94,7 +106,7 @@ export default function TopBar({
         {currentUser && (
           <div className={styles.userProfile}>
             <span className={styles.userName}>{currentUser.name}</span>
-            <span className={styles.userRole}>{currentUser.role === "Admin" ? "Admin" : "Employee"}</span>
+            <span className={styles.userRole}>{currentUser.role}</span>
           </div>
         )}
 
