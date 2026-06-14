@@ -18,7 +18,6 @@ A high-performance, responsive, and aesthetically premium web-based Restaurant P
 ## 🌟 Project Overview
 
 **Oak & Bean** is designed to streamline daily cafe logistics by connecting front-of-house customer transactions with administrative reports. 
-
 The application implements a split system:
 - **POS Terminal (Cashier View):** A high-touch, drag-and-drop-friendly interface allowing staff to select dining tables, assign customers, construct orders with instant tax calculations, send tickets to the kitchen, and complete split checkouts.
 - **Backend Dashboard (Admin View):** A clean dashboard presenting revenue graphs, payment method distributions (UPI, Cash, Card), search-filtered order receipts, and live menu catalog overrides.

@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Retro Diner POS Terminal",
-  description: "Premium glassmorphic Single Page Restaurant/Cafe POS Terminal frontend application.",
+  title: "Oak & Bean POS Terminal",
+  description: "Web-based Restaurant/Cafe POS Terminal frontend application.",
 };
 
 export default function RootLayout({ children }) {
